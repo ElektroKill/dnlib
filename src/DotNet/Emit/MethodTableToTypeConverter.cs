@@ -12,7 +12,7 @@ namespace dnlib.DotNet.Emit {
 	/// <c>RuntimeTypeHandle.Value</c> and it's the same address you use with the WinDbg SOS command
 	/// !dumpmt.
 	/// </summary>
-	static class MethodTableToTypeConverter {
+	public static class MethodTableToTypeConverter {
 		const string METHOD_NAME = "m";
 		static readonly MethodInfo setMethodBodyMethodInfo = typeof(MethodBuilder).GetMethod("SetMethodBody", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 		static readonly FieldInfo localSignatureFieldInfo = typeof(ILGenerator).GetField("m_localSignature", BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
