@@ -38,6 +38,11 @@ namespace dnlib.DotNet {
 		TryToUseDefs = TryToUseTypeDefs | TryToUseMethodDefs | TryToUseFieldDefs,
 
 		/// <summary>
+		/// Don't use specialized code for importing <see cref="FieldInfo"/>s which have a geneeric declaring type.
+		/// </summary>
+		ForceStandardFieldInfoImport = 8,
+
+		/// <summary>
 		/// Don't set this flag. For internal use only.
 		/// </summary>
 		FixSignature = int.MinValue,
@@ -98,6 +103,7 @@ namespace dnlib.DotNet {
 		bool TryToUseTypeDefs => (options & ImporterOptions.TryToUseTypeDefs) != 0;
 		bool TryToUseMethodDefs => (options & ImporterOptions.TryToUseMethodDefs) != 0;
 		bool TryToUseFieldDefs => (options & ImporterOptions.TryToUseFieldDefs) != 0;
+		bool ForceStandardFieldInfoImport => (options & ImporterOptions.ForceStandardFieldInfoImport) != 0;
 
 		bool FixSignature {
 			get => (options & ImporterOptions.FixSignature) != 0;
@@ -143,6 +149,16 @@ namespace dnlib.DotNet {
 		/// <param name="gpContext">Generic parameter context</param>
 		public Importer(ModuleDef module, ImporterOptions options, GenericParamContext gpContext)
 			: this(module, options, gpContext, null) {
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="module">The module that will own all references</param>
+		/// <param name="options">Importer options</param>
+		/// <param name="mapper">Mapper for renamed entities</param>
+		public Importer(ModuleDef module, ImporterOptions options, ImportMapper mapper)
+			: this(module, options, new GenericParamContext(), mapper) {
 		}
 
 		/// <summary>
@@ -614,7 +630,7 @@ namespace dnlib.DotNet {
 			}
 
 			MemberRef fieldRef;
-			if (origField.FieldType.ContainsGenericParameters) {
+			if (origField.FieldType.ContainsGenericParameters && !ForceStandardFieldInfoImport) {
 				var origDeclType = origField.DeclaringType;
 				var asm = module.Context.AssemblyResolver.Resolve(origDeclType.Module.Assembly.GetName(), module);
 				if (asm is null || asm.FullName != origDeclType.Assembly.FullName)
