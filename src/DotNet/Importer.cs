@@ -38,7 +38,7 @@ namespace dnlib.DotNet {
 		TryToUseDefs = TryToUseTypeDefs | TryToUseMethodDefs | TryToUseFieldDefs,
 
 		/// <summary>
-		/// Don't use specialized code for importing <see cref="FieldInfo"/>s which have a geneeric declaring type.
+		/// Don't use specialized code for importing <see cref="FieldInfo"/>s which have a generic declaring type.
 		/// </summary>
 		ForceStandardFieldInfoImport = 8,
 
