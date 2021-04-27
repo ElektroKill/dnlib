@@ -120,7 +120,12 @@ namespace dnlib.DotNet {
 		/// <inheritdoc/>
 		protected override void InitializeResources() {
 			var table = TablesStream.ManifestResourceTable;
-			var tmp = new ResourceCollection((int)table.Rows, null, (ctx, i) => CreateResource((uint)i + 1));
+			var tmp = new ResourceCollection((int)table.Rows, null, (_, i) => {
+				var res = CreateResource((uint)i + 1);
+				res.LoadCustomAttributes(this);
+				res.LoadCustomDebugInfos(this);
+				return res;
+			});
 			Interlocked.CompareExchange(ref resources, tmp, null);
 		}
 
