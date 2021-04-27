@@ -272,6 +272,12 @@ namespace dnlib.DotNet {
 		void Add(CAArgument arg) {
 			// It's a struct so can't be null
 			Add(arg.Type);
+			if (arg.Value is TypeSig ts)
+				Add(ts);
+			else if (arg.Value is IList<CAArgument> args)
+				Add(args);
+			else if(arg.Value is CAArgument newArg) // Don't know when CAArgument.Value is CAArgument
+				Add(newArg);
 		}
 
 		void Add(IEnumerable<CANamedArgument> args) {
