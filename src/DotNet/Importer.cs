@@ -150,6 +150,16 @@ namespace dnlib.DotNet {
 		/// </summary>
 		/// <param name="module">The module that will own all references</param>
 		/// <param name="options">Importer options</param>
+		/// <param name="mapper">Mapper for renamed entities</param>
+		public Importer(ModuleDef module, ImporterOptions options, ImportMapper mapper)
+			: this(module, options, new GenericParamContext(), mapper) {
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="module">The module that will own all references</param>
+		/// <param name="options">Importer options</param>
 		/// <param name="gpContext">Generic parameter context</param>
 		/// <param name="mapper">Mapper for renamed entities</param>
 		public Importer(ModuleDef module, ImporterOptions options, GenericParamContext gpContext, ImportMapper mapper) {
